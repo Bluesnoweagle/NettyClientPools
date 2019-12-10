@@ -15,6 +15,9 @@
 ## 主要实现原理
 ### Netty客户端实现
 先实现一个客户端，再进行池化，由于使用连接池进行
+#### Bootstrap初始处理链
+每一个Channel的编解码器，登录认证，处理handler，超时，心跳，异常处理，断线重连等都是一种处理handler，都可以放在handler的传播链中。这些传播链中的元素都需要在ChannelInitializer中设置，每启动一个channel时都会调用其中的initChannel方法，因此可以将需要与Channel绑定的属性或者方法在此设置。
+
 ### 客户端连接池
 Netty本身自带连接池:ChannelPool（连接池）与ChannelPoolMap（多个不同地址的连接池），但没有没有健康检查机制、无法剔除(evict)指定Channel、无法动态控制连接数等。
 所以不建议使用。我选用的是apche-common-pool2作为连接池，相关资料可以自行百度。
